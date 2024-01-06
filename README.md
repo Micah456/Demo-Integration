@@ -13,11 +13,10 @@ Demo Integration project for practice. Online shop connected to backend inventor
 - Online store
 - Online bank
 ### APIs
-#### SYSAPI-UserDB:  
+#### SYSAPI-OnlineStore:  
 - GET, POST, PUT, DELETE
-#### SYSAPI-InventoryDB:  
-- GET, POST, PUT, DELETE
-#### SYSAPI-BankDB:  
+- Endpoints: user and sale
+#### SYSAPI-Bank:  
 - GET, POST, PUT, DELETE
 #### EXPAPI-OnlineStore:  
 - Get inventory
@@ -30,10 +29,9 @@ Demo Integration project for practice. Online shop connected to backend inventor
 - Get one transaction
 - Check sufficient funds
 - Process Payment  
-#### PROAPI-UserManagemnt:  
-- EXPAPI-OnlineStore -> SYSAPI-UserDB
-#### PROAPI-SaleManagement:  
-- EXPAPI-OnlineStore -> SYSAPI-UserDB and SYSAPI-InventoryDB
+#### PROAPI-StoreManagemnt:
+- Endpoints: user and sale
+- EXPAPI-OnlineStore -> SYSAPI-UserDB and/or SYSAPI-InventoryDB
 #### PROAPI-PaymentManagement:  
 - EXPAPI-OnlineBank -> SYSAPI-BankDB
 
