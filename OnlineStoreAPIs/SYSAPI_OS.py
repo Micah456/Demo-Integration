@@ -20,7 +20,7 @@ def get_user(id):
 @app.route("/users", methods=["POST"])
 def create_users():
     raw_resource = api.convert_resource_from_json(request.json)
-    if type(raw_resource) == list:
+    if type(raw_resource) is list:
         return api.set_resource_response(sysUser.create_users_from_array(raw_resource), "User")
     else:
         return api.set_resource_response(sysUser.create_user(raw_resource), "User")

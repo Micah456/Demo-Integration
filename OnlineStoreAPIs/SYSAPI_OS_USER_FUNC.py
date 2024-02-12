@@ -148,11 +148,11 @@ def delete_user_by_id(id):
 
 
 def format_value(val):
-    if type(val) == str:
+    if type(val) is str:
         val = val.replace("'", "''")
         val = "'" + val + "'"
     else:
-        if type(val) == bool:
+        if type(val) is bool:
             val = int(val)
         val = str(val)
     return val

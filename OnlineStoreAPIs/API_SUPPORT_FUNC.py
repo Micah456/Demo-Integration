@@ -40,7 +40,7 @@ def delete_resource_response(response, resourceType):
 
 
 def convert_resource_from_json(resource):
-    if type(resource) == str:
+    if type(resource) is str:
         resource = json.loads(resource)
     return resource
 
