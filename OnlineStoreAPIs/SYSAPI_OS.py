@@ -1,5 +1,6 @@
 from flask import Flask, request
 import SYSAPI_OS_USER_FUNC as sysUser
+import SYSAPI_OS_ITEM_FUNC as sysItem
 import API_SUPPORT_FUNC as api
 
 port = 5016
@@ -35,6 +36,17 @@ def update_user_(id):
 @app.route("/users/<id>", methods=["DELETE"])
 def delete_user(id):
     return api.delete_resource_response(sysUser.delete_user_by_id(id), "User")
+
+
+# ITEM
+@app.route("/items")
+def get_stock():
+    return api.get_resource_response(sysItem.get_item())
+
+
+@app.route("/items/<id>")
+def get_item(id):
+    return api.get_resource_response(sysItem.get_item(id))
 
 
 if __name__ == "__main__":
