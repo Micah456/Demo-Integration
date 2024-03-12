@@ -58,6 +58,10 @@ class TestServer(unittest.TestCase):
         assert new_item.get('ImageURL') == self.item2.get('ImageURL')
         self.assertFalse(sysItem.create_item(self.item2))
 
+    def test_get_item_by_name(self):
+        print("-------------- TEST: GETTING ITEM BY NAME ----------------")
+        assert sysItem.get_item_by_name(self.item1.get('Name')) == self.item1
+
 
 # driver code
 if __name__ == '__main__':
