@@ -42,6 +42,32 @@ def get_item(id=None):
         return None
 
 
+def create_item(item_dict):
+    '''Adds an item to the database using data from an item dictionary.
+    If successful, returns the item just created as a dictionary, else returns False.'''
+    print("---------- CREATING ITEM -------------")
+    try:
+        if item_dict.get('ImageURL') is None:
+            item_dict.pop('ImageURL')
+            values = str(list(item_dict.values()))
+            values = values[0:len(values)-1] + ", NULL"
+        else:
+            values = str(list(item_dict.values()))
+        statement = ("INSERT INTO " + stock_table + " ([Name], [Description], " +
+                     "[Price], [ImageURL]) VALUES (" + values[1:len(values)] + ")")
+        print(statement)
+        cnxn = pyodbc.connect(conn_str)
+        cursor = cnxn.cursor()
+        cursor.execute(statement)
+        cnxn.commit()
+        print("-------------- ITEM CREATED ----------------")
+        return get_item_by_name(item_dict.get('Name'))
+    except Exception:
+        print(traceback.format_exc())
+        print("Error: could not add item")
+        return False
+
+
 def create_item_dict(row):
     '''Generate a item dictionary from the row data returned from the database'''
     print("--------- GENERATING ITEM DICT ------------")
@@ -60,3 +86,25 @@ def collate_item_dicts(data):
     for row in data:
         stock_array.append(create_item_dict(row))
     return stock_array
+
+
+def get_item_by_name(name):
+    '''Returns item dictionary based on name.
+    Returns None if none found'''
+    print("-------- GETTING ITEM BY NAME ------------")
+    try:
+        cnxn = pyodbc.connect(conn_str)
+        cursor = cnxn.cursor()
+        statement = "SELECT * FROM " + stock_table + " WHERE Name = '" + name + "'"
+        print(statement)
+        cursor.execute(statement)
+        data = cursor.fetchall()
+        print("execution successful")
+        print("-------------- ITEM RETRIEVAL COMPLETE (by name) ----------------")
+        print("data: ")
+        print(data[0])
+        return create_item_dict(data[0])
+    except Exception:
+        print("--------- GET ITEM BY NAME: Something went wrong! -------------")
+        print(traceback.format_exc())
+        return None
