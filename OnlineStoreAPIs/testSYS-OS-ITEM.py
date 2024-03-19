@@ -62,6 +62,17 @@ class TestServer(unittest.TestCase):
         print("-------------- TEST: GETTING ITEM BY NAME ----------------")
         assert sysItem.get_item_by_name(self.item1.get('Name')) == self.item1
 
+    def test_put_item_by_id(self):
+        print("-------------- TEST: UPDATING ITEM BY ID ----------------")
+        new_item = sysItem.create_item(self.item3)
+        new_item['Price'] = 0.5
+        new_item2 = sysItem.update_item_by_id(new_item.get('ID'), new_item)
+        assert new_item2.get('Name') == self.item3.get('Name')
+        assert new_item2.get('Description') == self.item3.get('Description')
+        assert new_item2.get('Price') == 0.5
+        assert new_item2.get('ImageURL') == self.item3.get('ImageURL')
+        self.assertIsNone(sysItem.update_item_by_id(-1, new_item2))
+
 
 # driver code
 if __name__ == '__main__':

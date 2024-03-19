@@ -59,3 +59,29 @@ def set_resource_response(response, resourceType, create=True):
         msg_json = json.dumps({"Message": resourceType + " not " + action + "."})
         resp = Response(msg_json, mimetype='application/json', status=500)
     return resp
+
+
+def stringify_data_for_update(dict):
+    '''This converts the data in a dictionary to a string format
+    suitable for use in an update sql statement'''
+    keys = list(dict.keys())
+    data_string = ""
+    for i in range(len(dict)):
+        if i != 0:
+            data_string += ", "
+        data_string += "[" + keys[i] + "]" + " = " + format_value(dict[keys[i]])
+    return data_string
+
+
+def format_value(val):
+    '''Use this to correctly format values for sql update statements'''
+    if type(val) is str:
+        val = val.replace("'", "''")
+        val = "'" + val + "'"
+    else:
+        if type(val) is bool:
+            val = int(val)
+        elif val is None:
+            val = "NULL"
+        val = str(val)
+    return val

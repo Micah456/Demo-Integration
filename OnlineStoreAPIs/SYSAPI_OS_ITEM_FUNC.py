@@ -2,6 +2,7 @@ import os
 import pyodbc
 import traceback
 from dotenv import load_dotenv
+import API_SUPPORT_FUNC as apiSup
 
 load_dotenv()
 server = os.getenv("server")
@@ -107,4 +108,26 @@ def get_item_by_name(name):
     except Exception:
         print("--------- GET ITEM BY NAME: Something went wrong! -------------")
         print(traceback.format_exc())
+        return None
+
+
+def update_item_by_id(id, item_dict):
+    '''Updates an item in the database using data from an item dictionary.
+    If successful, returns the updated item as a dictionary, else returns None.'''
+    try:
+        print("--------- UPDATE ITEM BY ID ----------------")
+        item_dict.pop('ID')
+        statement = ("UPDATE " + stock_table + " SET " + apiSup.stringify_data_for_update(item_dict) +
+                     " WHERE ID = " + str(id))
+        cnxn = pyodbc.connect(conn_str)
+        cursor = cnxn.cursor()
+        print("----------- STATEMENT:")
+        print(statement)
+        cursor.execute(statement)
+        cnxn.commit()
+        print("----------- ITEM UPDATED -------------")
+        return get_item(id)
+    except Exception:
+        print(traceback.format_exc())
+        print("Error: could not update user")
         return None
