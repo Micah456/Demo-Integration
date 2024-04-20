@@ -1,6 +1,7 @@
 import os
 import pyodbc
 import traceback
+import API_SUPPORT_FUNC as apiSup
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -147,34 +148,13 @@ def delete_user_by_id(id):
         return False
 
 
-def format_value(val):
-    if type(val) is str:
-        val = val.replace("'", "''")
-        val = "'" + val + "'"
-    else:
-        if type(val) is bool:
-            val = int(val)
-        val = str(val)
-    return val
-
-
-def stringify_user_data(user_dict):
-    keys = list(user_dict.keys())
-    user_string = ""
-    for i in range(len(user_dict)):
-        if i != 0:
-            user_string += ", "
-        user_string += "[" + keys[i] + "]" + " = " + format_value(user_dict[keys[i]])
-    return user_string
-
-
 def update_user_by_id(id, user_dict):
     '''Updates user with the corresponding ID to the data passed in the user_dict dictionary.
     Returns True if successful. False if not.'''
     try:
         print("--------- UPDATE USER BY ID ----------------")
         user_dict.pop('ID')
-        statement = ("UPDATE " + users_table + " SET " + stringify_user_data(user_dict) +
+        statement = ("UPDATE " + users_table + " SET " + apiSup.stringify_data_for_update(user_dict) +
                      " WHERE ID = " + str(id))
         cnxn = pyodbc.connect(conn_str)
         cursor = cnxn.cursor()
