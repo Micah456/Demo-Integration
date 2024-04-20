@@ -131,3 +131,10 @@ def update_item_by_id(id, item_dict):
         print(traceback.format_exc())
         print("Error: could not update user")
         return None
+
+
+def create_items_from_array(item_dict_array):
+    '''Creates items in the database based on data from an array of item dictionaries.
+    Returns array of created items in dictionary form with IDs'''
+    print("-------- CREATING ITEMS FROM ARRAY ------------")
+    return apiSup.create_objects_from_array(item_dict_array, create_item)
