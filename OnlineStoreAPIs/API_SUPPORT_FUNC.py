@@ -85,3 +85,19 @@ def format_value(val):
             val = "NULL"
         val = str(val)
     return val
+
+
+def create_objects_from_array(dict_array: list, create_obj_func):
+    '''Create one or more objects in the database based on data from an array of object dictionaries.
+    Returns array of created objects in dictionary form with IDs
+    *dict_array*: Array of dicts used to extract data
+    *create_obj_func*: Function used to create an object for each dict in the array
+    '''
+    print("-------- CREATING OBJECTS FROM ARRAY ------------")
+    object_array = []
+    for dict in dict_array:
+        new_obj = create_obj_func(dict)
+        if new_obj:
+            object_array.append(new_obj)
+    print("-------------- OBJECTS(S) CREATED ----------------")
+    return object_array

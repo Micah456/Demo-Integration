@@ -118,13 +118,7 @@ def create_users_from_array(user_dict_array):
     '''Creates users in the database based on data from an array of user dictionaries.
     Returns array of created users in dictionary form with IDs'''
     print("-------- CREATING USERS FROM ARRAY ------------")
-    created_user_array = []
-    for user_dict in user_dict_array:
-        new_user = create_user(user_dict)
-        if new_user:
-            created_user_array.append(new_user)
-    print("-------------- USER(S) CREATED ----------------")
-    return created_user_array
+    return apiSup.create_objects_from_array(user_dict_array, create_user)
 
 
 def delete_user_by_id(id):

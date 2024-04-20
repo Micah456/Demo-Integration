@@ -12,12 +12,18 @@ class TestServer(unittest.TestCase):
              'ImageURL': None}
     item3 = {"Name": "Tomato Juice", "Description": "Why is this even a thing?", "Price": 1.75,
              "ImageURL": None}
+    item4 = {"Name": "Carrot Juice", "Description": "Not bad.", "Price": 3.0,
+             "ImageURL": None}
+    item5 = {"Name": "Cranberry Juice", "Description": "Good for UTIs.", "Price": 4.99,
+             "ImageURL": None}
 
     @classmethod
     def setUpClass(cls):
         print("---------- TEST CLASS SETUP ---------------")
         item_name_2 = "Orange Juice"
         item_name_3 = "Tomato Juice"
+        item_name_4 = "Carrot Juice"
+        item_name_5 = "Cranberry Juice"
         try:
             server = os.getenv("server")
             database = os.getenv("database")
@@ -26,7 +32,9 @@ class TestServer(unittest.TestCase):
                         database + ";Trusted_Connection=yes;")
             statement = ("DELETE FROM " + stock_table + " WHERE Name = '" +
                          item_name_2 + "' OR Name = '" +
-                         item_name_3 + "'")
+                         item_name_3 + "' OR Name = '" +
+                         item_name_4 + "' OR Name = '" +
+                         item_name_5 + "'")
             print(statement)
             cnxn = pyodbc.connect(conn_str)
             cursor = cnxn.cursor()
@@ -72,6 +80,17 @@ class TestServer(unittest.TestCase):
         assert new_item2.get('Price') == 0.5
         assert new_item2.get('ImageURL') == self.item3.get('ImageURL')
         self.assertIsNone(sysItem.update_item_by_id(-1, new_item2))
+
+    def test_post_items_from_array(self):
+        print("-------------- TEST: CREATING ITEM(S) FROM ARRAY ----------------")
+        item_array = [self.item4, self.item5]
+        total_items = len(sysItem.get_item())
+        self.assertIsNone(sysItem.get_item_by_name(self.item4.get('Name')))
+        self.assertIsNone(sysItem.get_item_by_name(self.item5.get('Name')))
+        created_items_array = sysItem.create_items_from_array(item_array)
+        assert created_items_array[0].get('Name') == self.item4.get('Name')
+        assert created_items_array[1].get('Name') == self.item5.get('Name')
+        assert len(sysItem.get_item()) == total_items + 2
 
 
 # driver code
